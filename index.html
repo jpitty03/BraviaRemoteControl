@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sony Bravia Remote Control</title>
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; connect-src 'self' http://192.168.1.102 http://192.168.1.102/*;">
+</head>
+<body>
+    <h1>Sony Bravia TV Control</h1>
+
+    <!-- Button to discover devices -->
+    <h2>Device Discovery</h2>
+    <button id="discoverBtn">Discover Devices</button>
+    <br/>
+    <label for="deviceSelect">Select a device:</label>
+    <select id="deviceSelect"></select>
+
+    <br/><br/>
+
+    <!-- Volume Controls -->
+    <h2>TV Controls (PSK)</h2>
+    TV IP: <input type="text" id="tvIp" value="192.168.1.102"><br>
+    PSK: <input type="text" id="psk" value="1123"><br>
+    <button id="volumeUpBtn">Volume Up</button>
+    <button id="volumeDownBtn">Volume Down</button>
+
+    <script>
+        // Helper function to send a command
+        function sendCommand(service, method, params) {
+            const tvIp = document.getElementById('tvIp').value;
+            const psk = document.getElementById('psk').value;
+            window.api.sendSonyCommand(tvIp, service, method, params, psk)
+                .then(response => {
+                    console.log('Command response:', response);
+                })
+                .catch(error => {
+                    console.error('Error sending command:', error);
+                });
+        }
+
+        // Device discovery button event
+        document.getElementById('discoverBtn').addEventListener('click', () => {
+            window.api.discoverDevices().then(devices => {
+                const deviceSelect = document.getElementById('deviceSelect');
+                deviceSelect.innerHTML = '';  // Clear the dropdown before adding new options
+
+                devices.forEach(device => {
+                    const option = document.createElement('option');
+                    option.value = device.ip;
+                    option.textContent = `${device.name} (${device.ip})`;
+                    deviceSelect.appendChild(option);
+                });
+
+                // Automatically select the first device in the list
+                if (devices.length > 0) {
+                    document.getElementById('tvIp').value = devices[0].ip;
+                }
+            }).catch(error => {
+                console.error('Error discovering devices:', error);
+            });
+        });
+
+        // Change IP when a device is selected from the dropdown
+        document.getElementById('deviceSelect').addEventListener('change', (event) => {
+            document.getElementById('tvIp').value = event.target.value;
+        });
+
+        // Volume Up and Down button events
+        document.getElementById('volumeUpBtn').addEventListener('click', () => {
+            sendCommand('audio', 'setAudioVolume', { target: 'speaker', volume: '+1' });
+        });
+
+        document.getElementById('volumeDownBtn').addEventListener('click', () => {
+            sendCommand('audio', 'setAudioVolume', { target: 'speaker', volume: '-1' });
+        });
+    </script>
+</body>
+</html>
