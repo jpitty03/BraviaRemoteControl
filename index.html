@@ -1,29 +1,38 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sony Bravia Remote Control</title>
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; connect-src 'self' http://192.168.1.102 http://192.168.1.102/*;">
+    <meta http-equiv="Content-Security-Policy"
+        content="default-src 'self'; script-src 'self' 'unsafe-inline'; connect-src 'self' http://192.168.1.102 http://192.168.1.102/*;">
 </head>
+
 <body>
     <h1>Sony Bravia TV Control</h1>
 
     <!-- Button to discover devices -->
     <h2>Device Discovery</h2>
     <button id="discoverBtn">Discover Devices</button>
-    <br/>
+    <br />
     <label for="deviceSelect">Select a device:</label>
     <select id="deviceSelect"></select>
 
-    <br/><br/>
+    <br /><br />
 
     <!-- Volume Controls -->
     <h2>TV Controls (PSK)</h2>
-    TV IP: <input type="text" id="tvIp" value="192.168.1.102"><br>
+    TV IP: <input type="text" id="tvIp" value="192.168.68.68"><br>
     PSK: <input type="text" id="psk" value="1123"><br>
     <button id="volumeUpBtn">Volume Up</button>
     <button id="volumeDownBtn">Volume Down</button>
+
+    <!-- Button to send IRCC command (e.g., Power Off) -->
+    <button id="sendIRCC">Send IRCC Command</button>
+
+    <br><br><br>
+    <button id="sendDebug">Debug</button>
 
     <script>
         // Helper function to send a command
@@ -74,6 +83,39 @@
         document.getElementById('volumeDownBtn').addEventListener('click', () => {
             sendCommand('audio', 'setAudioVolume', { target: 'speaker', volume: '-1' });
         });
+
+        // Function to fetch remote controller info     service, psk, jsonStringifie
+        document.getElementById('sendDebug').addEventListener('click', () => {
+            const tvIp = document.getElementById('tvIp').value;
+            const psk = document.getElementById('psk').value
+            const service = 'system'
+            const jsonStringifie = JSON.stringify({
+                method: 'getRemoteControllerInfo',
+                id: 54,
+                params: [],
+                version: '1.0'
+            })
+
+            window.api.basicAuthCommand(tvIp, service, psk, jsonStringifie).then(response => {
+                console.log('Remote Controller Info:', response);
+            }).catch(error => {
+                console.error('Error fetching remote controller info:', error);
+            });
+        });
+
+        // Function to send an IRCC command
+        document.getElementById('sendIRCC').addEventListener('click', () => {
+            const tvIp = document.getElementById('tvIp').value;
+            const psk = document.getElementById('psk').value;
+            const irccCode = 'AAAAAQAAAAEAAAAvAw==';  // Example IRCC code for "Power Off"
+
+            window.api.sendIRCCCommand(tvIp, irccCode, psk).then(response => {
+                console.log('IRCC Command Response:', response);
+            }).catch(error => {
+                console.error('Error sending IRCC command:', error);
+            });
+        });
     </script>
 </body>
+
 </html>
