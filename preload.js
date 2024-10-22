@@ -4,7 +4,7 @@ const SSDP = require('node-ssdp').Client;
 const ssdp = new SSDP();
 
 // Function to send commands using XHR
-function sendSonyCommand(tvIp, service, method, params, psk) {
+function sendCommand(tvIp, service, method, params, psk) {
     return new Promise((resolve, reject) => {
         const xhr = new XMLHttpRequest();
         xhr.open('POST', `http://${tvIp}/sony/${service}`);
@@ -155,6 +155,6 @@ contextBridge.exposeInMainWorld('api', {
     sendIRCCCommand: (tvIp, irccCode, psk) => sendIRCCCommand(tvIp, irccCode, psk),
     basicAuthCommand: (tvIp, service, psk, jsonStringified) => basicAuthCommand(tvIp, service, psk, jsonStringified),
     getSupportedApiInfo: (tvIp, psk) => getSupportedApiInfo(tvIp, psk),
-    sendSonyCommand: (tvIp, service, method, params, psk) => sendSonyCommand(tvIp, service, method, params, psk),
+    sendCommand: (tvIp, service, method, params, psk) => sendSonyCommand(tvIp, service, method, params, psk),
     discoverDevices: () => discoverDevices()
 });

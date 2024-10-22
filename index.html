@@ -29,23 +29,35 @@
     <button id="volumeDownBtn">Volume Down</button>
 
     <!-- Button to send IRCC command (e.g., Power Off) -->
-    <button id="sendIRCC">Send IRCC Command</button>
+    <button id="power">Power</button>
 
     <br><br><br>
     <button id="sendDebug">Debug</button>
 
     <script>
-        // Helper function to send a command
-        function sendCommand(service, method, params) {
+        // Helper function to send a commands
+        function sendCommandHelper(service, method, params) {
             const tvIp = document.getElementById('tvIp').value;
             const psk = document.getElementById('psk').value;
-            window.api.sendSonyCommand(tvIp, service, method, params, psk)
+            window.api.sendCommand(tvIp, service, method, params, psk)
                 .then(response => {
                     console.log('Command response:', response);
                 })
                 .catch(error => {
                     console.error('Error sending command:', error);
                 });
+        }
+
+        function sendIRCCHelper (irccCode) {
+            const tvIp = document.getElementById('tvIp').value;
+            const psk = document.getElementById('psk').value;
+
+            window.api.sendIRCCCommand(tvIp, irccCode, psk).then(response => {
+                console.log('IRCC Command Response:', response);
+            }).catch(error => {
+                console.error('Error sending IRCC command:', error);
+            });
+
         }
 
         // Device discovery button event
@@ -77,11 +89,15 @@
 
         // Volume Up and Down button events
         document.getElementById('volumeUpBtn').addEventListener('click', () => {
-            sendCommand('audio', 'setAudioVolume', { target: 'speaker', volume: '+1' });
+            sendCommandHelper('audio', 'setAudioVolume', { target: 'speaker', volume: '+1' });
         });
 
         document.getElementById('volumeDownBtn').addEventListener('click', () => {
-            sendCommand('audio', 'setAudioVolume', { target: 'speaker', volume: '-1' });
+            sendCommandHelper('audio', 'setAudioVolume', { target: 'speaker', volume: '-1' });
+        });
+
+        document.getElementById('volumeDownBtn').addEventListener('click', () => {
+            sendIRCCHelper('AAAAAQAAAAEAAAAvAw==');
         });
 
         // Function to fetch remote controller info     service, psk, jsonStringifie
@@ -100,19 +116,6 @@
                 console.log('Remote Controller Info:', response);
             }).catch(error => {
                 console.error('Error fetching remote controller info:', error);
-            });
-        });
-
-        // Function to send an IRCC command
-        document.getElementById('sendIRCC').addEventListener('click', () => {
-            const tvIp = document.getElementById('tvIp').value;
-            const psk = document.getElementById('psk').value;
-            const irccCode = 'AAAAAQAAAAEAAAAvAw==';  // Example IRCC code for "Power Off"
-
-            window.api.sendIRCCCommand(tvIp, irccCode, psk).then(response => {
-                console.log('IRCC Command Response:', response);
-            }).catch(error => {
-                console.error('Error sending IRCC command:', error);
             });
         });
     </script>
