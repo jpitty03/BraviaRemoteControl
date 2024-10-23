@@ -1,0 +1,105 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    overflow: hidden; 
+}
+
+.container {
+    display: flex;
+    flex-wrap: nowrap;  /* Keeps them side by side */
+    gap: 20px;          /* Space between columns */
+    padding: 20px;
+    max-width: 100%;    /* Ensure it doesn't overflow the window */
+}
+
+.input-container {
+    flex: 1 1 200px;    /* Responsive size: grows, shrinks, and has a base width of 200px */
+    min-width: 150px;   /* Ensures it doesn't shrink below 150px */
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.remote-container {
+    flex: 2 1 300px;    /* Remote takes more space, but still adjusts */
+    background-color: #333;
+    padding: 20px;
+    border-radius: 10px;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);  /* Responsive button size using fractions */
+    grid-gap: 10px;
+    max-width: 100%;    /* Makes sure it fits within the window */
+}
+
+.remote-button {
+    background-color: #555;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 20px;      /* Button padding */
+    cursor: pointer;
+    text-align: center;
+    font-size: 16px;    /* Button text size */
+    transition: background-color 0.3s ease, transform 0.1s ease; /* Smooth transitions */
+}
+
+/* Hover state */
+.remote-button:hover {
+    background-color: #777; /* Lighter color when hovered */
+}
+
+/* Active/pressed state */
+.remote-button:active {
+    background-color: #444; /* Darker color when pressed */
+    transform: scale(0.98); /* Slightly shrink button when pressed */
+}
+
+/* Special wide buttons */
+.remote-button.wide {
+    grid-column: span 2;
+}
+
+/* Hidden blank slots */
+.blank-slot {
+    visibility: hidden;
+}
+
+/* Adjust button size and text size for smaller screens */
+@media (max-width: 1024px) {
+    .remote-button {
+        padding: 15px;      /* Reduce padding */
+        font-size: 14px;    /* Reduce text size */
+    }
+
+    .remote-container {
+        grid-gap: 8px;      /* Reduce the gap between buttons */
+    }
+}
+
+@media (max-width: 768px) {
+    .remote-button {
+        padding: 10px;      /* Further reduce padding */
+        font-size: 12px;    /* Further reduce text size */
+    }
+
+    .remote-container {
+        grid-gap: 6px;      /* Further reduce gap */
+    }
+}
+
+@media (max-width: 480px) {
+    .remote-button {
+        padding: 8px;       /* Minimal padding */
+        font-size: 10px;    /* Smallest text size */
+    }
+
+    .remote-container {
+        grid-gap: 4px;      /* Tighten the gap */
+    }
+}

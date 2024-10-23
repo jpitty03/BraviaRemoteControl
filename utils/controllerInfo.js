@@ -1,4 +1,4 @@
-[
+const controllerInfo = [
     {
         "name": "Num1",
         "value": "AAAAAQAAAAEAAAAAAw=="
@@ -608,3 +608,6 @@
         "value": "AAAAAgAACB8AAAATAw=="
     }
 ]
+
+module.exports = controllerInfo;
+

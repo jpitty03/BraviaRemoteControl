@@ -5,50 +5,87 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sony Bravia Remote Control</title>
+    <link rel="stylesheet" href="style.css">
     <meta http-equiv="Content-Security-Policy"
-        content="default-src 'self'; script-src 'self' 'unsafe-inline'; connect-src 'self' http://192.168.1.102 http://192.168.1.102/*;">
+        content="default-src 'self'; script-src 'self' 'unsafe-inline'; connect-src 'self' http://192.168.68.68 http://192.168.68.68/*;">
 </head>
 
 <body>
-    <h1>Sony Bravia TV Control</h1>
+    <div class="container">  <!-- Flex container -->
+        <!-- Input container for device discovery and controls -->
+        <div class="input-container">
+            <h1>Sony Bravia Remote Control</h1>
 
-    <!-- Button to discover devices -->
-    <h2>Device Discovery</h2>
-    <button id="discoverBtn">Discover Devices</button>
-    <br />
-    <label for="deviceSelect">Select a device:</label>
-    <select id="deviceSelect"></select>
+            <h2>Device Discovery</h2>
+            <button id="discoverBtn">Discover Devices</button>
+            <br />
+            <label for="deviceSelect">Select a device:</label>
+            <select id="deviceSelect"></select>
 
-    <br /><br />
+            <h2>TV Controls (PSK)</h2>
+            TV IP: <input type="text" id="tvIp" value="192.168.68.68"><br>
+            PSK: <input type="text" id="psk" value="1123"><br><br>
+            <button id="sendDebug">Debug</button>
+        </div>
 
-    <!-- Volume Controls -->
-    <h2>TV Controls (PSK)</h2>
-    TV IP: <input type="text" id="tvIp" value="192.168.68.68"><br>
-    PSK: <input type="text" id="psk" value="1123"><br>
-    <button id="volumeUpBtn">Volume Up</button>
-    <button id="volumeDownBtn">Volume Down</button>
+        <!-- Remote buttons with blank slots 3x1 Row Layout -->
+        <div class="remote-container">
+            <button class="remote-button" id="Tv">TV</button>
+            <div class="remote-button blank-slot"></div>
+            <button class="remote-button" id="TvPower">Power</button>
 
-    <!-- Button to send IRCC command (e.g., Power Off) -->
-    <button id="power">Power</button>
+            <button class="remote-button" id="TvInput">Input</button>
+            <div class="remote-button blank-slot"></div>
+            <button class="remote-button" id="TopMenu">Menu</button>
 
-    <br><br><br>
-    <button id="sendDebug">Debug</button>
+            <div class="remote-button blank-slot"></div>
+            <div class="remote-button blank-slot"></div>
+            <div class="remote-button blank-slot"></div>
+
+            <div class="remote-button blank-slot"></div>
+            <button class="remote-button" id="Up">Up</button>
+            <div class="remote-button blank-slot"></div>
+
+            <button class="remote-button" id="Left">Left</button>
+            <button class="remote-button" id="Confirm">OK</button>
+            <button class="remote-button" id="Right">Right</button>
+
+            <div class="remote-button blank-slot"></div>
+            <button class="remote-button" id="Down">Down</button>
+            <div class="remote-button blank-slot"></div>
+
+            <div class="remote-button blank-slot"></div>
+            <div class="remote-button blank-slot"></div>
+            <div class="remote-button blank-slot"></div>
+
+            <button class="remote-button" id="Return">Back</button>
+            <div class="remote-button blank-slot"></div>
+            <button class="remote-button" id="Home">Home</button>
+
+            <div class="remote-button blank-slot"></div>
+            <div class="remote-button blank-slot"></div>
+            <div class="remote-button blank-slot"></div>
+
+            <button class="remote-button" id="VolumeUp">Volume Up</button>
+            <div class="remote-button blank-slot"></div>
+            <button class="remote-button" id="ChannelUp">Channel Up</button>
+
+            <button class="remote-button" id="VolumeDown">Volume Down</button>
+            <button class="remote-button" id="Mute">Mute</button>
+            <button class="remote-button" id="ChannelDown">Channel Down</button>
+
+            <button class="remote-button" id="PlayPause">Play/Pause</button>
+            <div class="remote-button blank-slot"></div>
+            <div class="remote-button blank-slot"></div>
+
+            <button class="remote-button wide" id="Netflix">Netflix</button>
+            <button class="remote-button wide" id="YouTube">YouTube</button>
+        </div>
+    </div>
 
     <script>
-        // Helper function to send a commands
-        function sendCommandHelper(service, method, params) {
-            const tvIp = document.getElementById('tvIp').value;
-            const psk = document.getElementById('psk').value;
-            window.api.sendCommand(tvIp, service, method, params, psk)
-                .then(response => {
-                    console.log('Command response:', response);
-                })
-                .catch(error => {
-                    console.error('Error sending command:', error);
-                });
-        }
-
-        function sendIRCCHelper (irccCode) {
+        // Helper function to send IRCC commands
+        function sendIRCCHelper(irccCode) {
             const tvIp = document.getElementById('tvIp').value;
             const psk = document.getElementById('psk').value;
 
@@ -57,8 +94,24 @@
             }).catch(error => {
                 console.error('Error sending IRCC command:', error);
             });
-
         }
+
+        // Load controller info and bind click events to buttons
+        document.addEventListener('DOMContentLoaded', () => {
+            const controllerInfo = window.api.controllerInfo;
+
+            console.log(controllerInfo)
+
+            // Iterate through the JSON array and bind events
+            controllerInfo.forEach(item => {
+                const button = document.getElementById(item.name);
+                if (button) {
+                    button.addEventListener('click', () => {
+                        sendIRCCHelper(item.value);
+                    });
+                }
+            });
+        });
 
         // Device discovery button event
         document.getElementById('discoverBtn').addEventListener('click', () => {
@@ -87,32 +140,19 @@
             document.getElementById('tvIp').value = event.target.value;
         });
 
-        // Volume Up and Down button events
-        document.getElementById('volumeUpBtn').addEventListener('click', () => {
-            sendCommandHelper('audio', 'setAudioVolume', { target: 'speaker', volume: '+1' });
-        });
-
-        document.getElementById('volumeDownBtn').addEventListener('click', () => {
-            sendCommandHelper('audio', 'setAudioVolume', { target: 'speaker', volume: '-1' });
-        });
-
-        document.getElementById('volumeDownBtn').addEventListener('click', () => {
-            sendIRCCHelper('AAAAAQAAAAEAAAAvAw==');
-        });
-
-        // Function to fetch remote controller info     service, psk, jsonStringifie
+        // Debug button to fetch remote controller info
         document.getElementById('sendDebug').addEventListener('click', () => {
             const tvIp = document.getElementById('tvIp').value;
-            const psk = document.getElementById('psk').value
-            const service = 'system'
-            const jsonStringifie = JSON.stringify({
+            const psk = document.getElementById('psk').value;
+            const service = 'system';
+            const jsonStringified = JSON.stringify({
                 method: 'getRemoteControllerInfo',
                 id: 54,
                 params: [],
                 version: '1.0'
-            })
+            });
 
-            window.api.basicAuthCommand(tvIp, service, psk, jsonStringifie).then(response => {
+            window.api.basicAuthCommand(tvIp, service, psk, jsonStringified).then(response => {
                 console.log('Remote Controller Info:', response);
             }).catch(error => {
                 console.error('Error fetching remote controller info:', error);

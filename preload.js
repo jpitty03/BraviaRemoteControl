@@ -1,4 +1,5 @@
 const { contextBridge } = require('electron');
+const controllerInfo = require('./utils/controllerInfo');
 const XMLHttpRequest = require('xmlhttprequest').XMLHttpRequest;
 const SSDP = require('node-ssdp').Client;
 const ssdp = new SSDP();
@@ -152,9 +153,10 @@ function sendIRCCCommand(tvIp, irccCode, psk) {
 
 // Expose device discovery and command sending functions to the renderer process
 contextBridge.exposeInMainWorld('api', {
+    controllerInfo,
     sendIRCCCommand: (tvIp, irccCode, psk) => sendIRCCCommand(tvIp, irccCode, psk),
     basicAuthCommand: (tvIp, service, psk, jsonStringified) => basicAuthCommand(tvIp, service, psk, jsonStringified),
     getSupportedApiInfo: (tvIp, psk) => getSupportedApiInfo(tvIp, psk),
-    sendCommand: (tvIp, service, method, params, psk) => sendSonyCommand(tvIp, service, method, params, psk),
+    sendCommand: (tvIp, service, method, params, psk) => sendCommand(tvIp, service, method, params, psk),
     discoverDevices: () => discoverDevices()
 });
