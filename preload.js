@@ -1,4 +1,4 @@
-const { contextBridge } = require('electron');
+const { contextBridge, ipcRenderer } = require('electron');
 const controllerInfo = require('./utils/controllerInfo');
 const XMLHttpRequest = require('xmlhttprequest').XMLHttpRequest;
 const SSDP = require('node-ssdp').Client;
@@ -51,7 +51,7 @@ function discoverDevices() {
 
         // Stop discovery after 10 seconds and return found devices
         setTimeout(() => {
-            ssdp.stop();
+            // ssdp.stop();
             if (devices.length > 0) {
                 resolve(devices);
             } else {
@@ -119,7 +119,6 @@ function sendIRCCCommand(tvIp, irccCode, psk) {
         const xhr = new XMLHttpRequest();
         xhr.open('POST', `http://${tvIp}/sony/ircc`);
 
-        // Set required headers
         xhr.setRequestHeader('Content-Type', 'text/xml; charset=UTF-8');
         xhr.setRequestHeader('SOAPACTION', '"urn:schemas-sony-com:service:IRCC:1#X_SendIRCC"');
         if (psk) {
@@ -150,6 +149,12 @@ function sendIRCCCommand(tvIp, irccCode, psk) {
         xhr.send(soapEnvelope);
     });
 }
+
+// Expose settingsAPI to interact with the main process for settings
+contextBridge.exposeInMainWorld('settingsAPI', {
+    saveSettings: (settings) => ipcRenderer.send('save-settings', settings),
+    onLoadSettings: (callback) => ipcRenderer.on('load-settings', (event, settings) => callback(settings))
+});
 
 // Expose device discovery and command sending functions to the renderer process
 contextBridge.exposeInMainWorld('api', {

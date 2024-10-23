@@ -11,15 +11,15 @@ body {
 
 .container {
     display: flex;
-    flex-wrap: nowrap;  /* Keeps them side by side */
-    gap: 20px;          /* Space between columns */
+    flex-wrap: nowrap;
+    gap: 20px;
     padding: 20px;
-    max-width: 100%;    /* Ensure it doesn't overflow the window */
+    max-width: 100%;
 }
 
 .input-container {
-    flex: 1 1 200px;    /* Responsive size: grows, shrinks, and has a base width of 200px */
-    min-width: 150px;   /* Ensures it doesn't shrink below 150px */
+    flex: 1 1 200px;
+    min-width: 150px;
     background-color: #fff;
     padding: 20px;
     border-radius: 10px;
@@ -27,14 +27,14 @@ body {
 }
 
 .remote-container {
-    flex: 2 1 300px;    /* Remote takes more space, but still adjusts */
+    flex: 2 1 300px;
     background-color: #333;
     padding: 20px;
     border-radius: 10px;
     display: grid;
-    grid-template-columns: repeat(3, 1fr);  /* Responsive button size using fractions */
+    grid-template-columns: repeat(3, 1fr);
     grid-gap: 10px;
-    max-width: 100%;    /* Makes sure it fits within the window */
+    max-width: 100%;
 }
 
 .remote-button {
@@ -42,22 +42,22 @@ body {
     color: white;
     border: none;
     border-radius: 5px;
-    padding: 20px;      /* Button padding */
+    padding: 20px;
     cursor: pointer;
     text-align: center;
-    font-size: 16px;    /* Button text size */
-    transition: background-color 0.3s ease, transform 0.1s ease; /* Smooth transitions */
+    font-size: 16px;
+    transition: background-color 0.3s ease, transform 0.1s ease;
 }
 
 /* Hover state */
 .remote-button:hover {
-    background-color: #777; /* Lighter color when hovered */
+    background-color: #777;
 }
 
 /* Active/pressed state */
 .remote-button:active {
-    background-color: #444; /* Darker color when pressed */
-    transform: scale(0.98); /* Slightly shrink button when pressed */
+    background-color: #444;
+    transform: scale(0.98);
 }
 
 /* Special wide buttons */
@@ -70,36 +70,60 @@ body {
     visibility: hidden;
 }
 
-/* Adjust button size and text size for smaller screens */
 @media (max-width: 1024px) {
     .remote-button {
-        padding: 15px;      /* Reduce padding */
-        font-size: 14px;    /* Reduce text size */
+        padding: 15px;
+        font-size: 14px;
     }
 
     .remote-container {
-        grid-gap: 8px;      /* Reduce the gap between buttons */
+        grid-gap: 8px;
     }
 }
 
 @media (max-width: 768px) {
     .remote-button {
-        padding: 10px;      /* Further reduce padding */
-        font-size: 12px;    /* Further reduce text size */
+        padding: 10px;
+        font-size: 12px;
     }
 
     .remote-container {
-        grid-gap: 6px;      /* Further reduce gap */
+        grid-gap: 6px;
     }
 }
 
 @media (max-width: 480px) {
     .remote-button {
-        padding: 8px;       /* Minimal padding */
-        font-size: 10px;    /* Smallest text size */
+        padding: 8px;
+        font-size: 10px;
     }
 
     .remote-container {
-        grid-gap: 4px;      /* Tighten the gap */
+        grid-gap: 4px;
     }
+}
+
+/* Toast styles */
+.toast {
+    visibility: hidden;
+    min-width: 250px;
+    margin-left: -125px;
+    background-color: #333;
+    color: #fff;
+    text-align: center;
+    border-radius: 5px;
+    padding: 16px;
+    position: fixed;
+    z-index: 1;
+    left: 50%;
+    bottom: 30px;
+    font-size: 17px;
+    opacity: 0;
+    transition: opacity 0.5s ease, visibility 0s linear 0.5s;
+}
+
+.toast.show {
+    visibility: visible;
+    opacity: 1;
+    transition: opacity 0.5s ease;
 }

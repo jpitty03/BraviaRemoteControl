@@ -6,12 +6,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sony Bravia Remote Control</title>
     <link rel="stylesheet" href="style.css">
-    <meta http-equiv="Content-Security-Policy"
-        content="default-src 'self'; script-src 'self' 'unsafe-inline'; connect-src 'self' http://192.168.68.68 http://192.168.68.68/*;">
 </head>
 
 <body>
-    <div class="container">  <!-- Flex container -->
+    <div id="toast" class="toast">Settings saved successfully!</div>
+
+    <div class="container">
         <!-- Input container for device discovery and controls -->
         <div class="input-container">
             <h1>Sony Bravia Remote Control</h1>
@@ -25,7 +25,7 @@
             <h2>TV Controls (PSK)</h2>
             TV IP: <input type="text" id="tvIp" value="192.168.68.68"><br>
             PSK: <input type="text" id="psk" value="1123"><br><br>
-            <button id="sendDebug">Debug</button>
+            <button id="saveSettingsBtn">Save Settings</button><br><br>
         </div>
 
         <!-- Remote buttons with blank slots 3x1 Row Layout -->
@@ -84,6 +84,40 @@
     </div>
 
     <script>
+        // Load settings when the app loads
+        window.settingsAPI.onLoadSettings((settings) => {
+            if (settings.tvIp) {
+                document.getElementById('tvIp').value = settings.tvIp;
+            }
+            if (settings.psk) {
+                document.getElementById('psk').value = settings.psk;
+            }
+        });
+
+        // Function to show toast notification
+        function showToast(message) {
+            const toast = document.getElementById('toast');
+            toast.textContent = message;
+            toast.classList.add('show');
+
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 3000);
+        }
+
+        // Save settings when the "Save Settings" button is clicked
+        document.getElementById('saveSettingsBtn').addEventListener('click', () => {
+            const tvIp = document.getElementById('tvIp').value;
+            const psk = document.getElementById('psk').value;
+
+            window.settingsAPI.saveSettings({ tvIp, psk });
+
+            console.log('Settings saved:', { tvIp, psk });
+
+            showToast('Settings saved successfully!');
+        });
+
+
         // Helper function to send IRCC commands
         function sendIRCCHelper(irccCode) {
             const tvIp = document.getElementById('tvIp').value;
@@ -100,9 +134,6 @@
         document.addEventListener('DOMContentLoaded', () => {
             const controllerInfo = window.api.controllerInfo;
 
-            console.log(controllerInfo)
-
-            // Iterate through the JSON array and bind events
             controllerInfo.forEach(item => {
                 const button = document.getElementById(item.name);
                 if (button) {
@@ -126,7 +157,6 @@
                     deviceSelect.appendChild(option);
                 });
 
-                // Automatically select the first device in the list
                 if (devices.length > 0) {
                     document.getElementById('tvIp').value = devices[0].ip;
                 }
@@ -135,28 +165,8 @@
             });
         });
 
-        // Change IP when a device is selected from the dropdown
         document.getElementById('deviceSelect').addEventListener('change', (event) => {
             document.getElementById('tvIp').value = event.target.value;
-        });
-
-        // Debug button to fetch remote controller info
-        document.getElementById('sendDebug').addEventListener('click', () => {
-            const tvIp = document.getElementById('tvIp').value;
-            const psk = document.getElementById('psk').value;
-            const service = 'system';
-            const jsonStringified = JSON.stringify({
-                method: 'getRemoteControllerInfo',
-                id: 54,
-                params: [],
-                version: '1.0'
-            });
-
-            window.api.basicAuthCommand(tvIp, service, psk, jsonStringified).then(response => {
-                console.log('Remote Controller Info:', response);
-            }).catch(error => {
-                console.error('Error fetching remote controller info:', error);
-            });
         });
     </script>
 </body>
