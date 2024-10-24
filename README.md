@@ -1,6 +1,6 @@
 # Sony Bravia Remote Control
 
-A simple Electron-based remote control application to interact with Sony Bravia TVs over a local network using the ScalarWebAPI and IRCC commands. The app allows users to control TV functionalities like power, volume, channels, input, and media controls through an intuitive remote interface.
+A simple Electron-based remote control application to interact with Sony Bravia TVs over a local network using the ScalarWebAPI and IRCC commands. The app allows users to control TV functionalities like power, volume, channels, input, and media controls through an intuitive remote interface. Built specifically for Tobii Dynavox who use TD Control for controlling the Operating System with only their eyes.
 
 ## Features
 
@@ -26,8 +26,24 @@ A simple Electron-based remote control application to interact with Sony Bravia 
 
 2. **Install Dependencies:**
 
-   Make sure you have Node.js installed.
+   Make sure you have [NodeJs](https://nodejs.org/) installed.
    ```bash
    npm install
    ```
 
+3. **Run the app:**
+
+   Make sure you have Node.js installed.
+   ```bash
+   npm start
+   ```
+
+## Usage
+
+1. **Device Discovery:**  Click on Discover Devices to automatically find your Sony Bravia TV on the network.
+1. **Set TV IP and PSK:**  Manually enter your TV’s IP address and PSK (Pre-Shared Key) if it is not automatically discovered.
+2. **Save Settings:**  Save your TV IP and PSK for future use by clicking Save Settings. A toast notification will confirm successful saving.
+2. **Control Your TV:**  Use the remote buttons to interact with your Sony Bravia TV. Commands like Power, Volume, Channel, and Input are supported.
+
+## License
+This project is licensed under the MIT License - see the LICENSE file for details.
