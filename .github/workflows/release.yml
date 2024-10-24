@@ -47,21 +47,20 @@
 
 name: Build/release
 
-on: push
+on: 
+  push:
+    tags:
+      - 'v*'  # Trigger on version tag push (e.g., v1.0.0)
 
 jobs:
   release:
-    runs-on: ${{ matrix.os }}
-
-    strategy:
-      matrix:
-        os: [windows-latest]
+    runs-on: windows-latest
 
     steps:
       - name: Check out Git repository
         uses: actions/checkout@v1
 
-      - name: Install Node.js, NPM and Yarn
+      - name: Install Node.js
         uses: actions/setup-node@v1
         with:
           node-version: 20
@@ -69,10 +68,13 @@ jobs:
       - name: Build/release Electron app
         uses: samuelmeuli/action-electron-builder@v1
         with:
-          # GitHub token, automatically provided to the action
-          # (No need to define this secret in the repo settings)
-          github_token: ${{ secrets.github_token }}
-
-          # If the commit is tagged with a version (e.g. "v1.0.0"),
-          # release the app after building
+          github_token: ${{ secrets.GITHUB_TOKEN }}
           release: ${{ startsWith(github.ref, 'refs/tags/v') }}
+
+      - name: Upload Release Assets
+        uses: actions/upload-release-asset@v1
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./dist/*.exe  # Replace with the correct path where the .exe is generated
+          asset_name: Sony_Bravia_Remote_Control_Setup_${{ github.ref_name }}.exe  # Name the file appropriately
+          asset_content_type: application/octet-stream
