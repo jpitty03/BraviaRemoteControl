@@ -45,31 +45,41 @@
 #           asset_name: Sony Bravia Remote Control Setup 1.0.0.exe
 #           asset_content_type: application/zip
 
-name: Create Release
+name: Build/Release Electron App
 
 on:
   push:
     tags:
-      - 'v*'  # Trigger only on tag pushes (e.g., v1.0.0)
+      - 'v*'  # Trigger on version tag pushes (e.g., v1.0.0)
+    branches:
+      - main
 
 jobs:
-  release:
+  build:
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout the repository
         uses: actions/checkout@v3
 
-      - name: Set up Node.js (if you're building a Node.js app)
+      - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
           node-version: '20'
 
-      - name: Install dependencies (if needed)
+      # Install Snapcraft
+      - name: Install Snapcraft
+        run: sudo snap install snapcraft --classic
+
+      # Clear Electron Builder Cache to prevent duplicate directory issue
+      - name: Clear Electron Builder Cache
+        run: rm -rf ~/.cache/electron-builder
+
+      - name: Install dependencies
         run: npm install
 
       - name: Build the application
-        run: npm run build  # This should generate your /dist folder
+        run: npm run build
 
       - name: Create GitHub Release
         id: create_release
@@ -77,8 +87,8 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          tag_name: ${{ github.ref_name }}  # Extract only the tag name (e.g., v1.0.0)
-          release_name: Release ${{ github.ref_name }}  # Name the release based on the tag
+          tag_name: ${{ github.ref_name }}
+          release_name: Release ${{ github.ref_name }}
           draft: false
           prerelease: false
 
