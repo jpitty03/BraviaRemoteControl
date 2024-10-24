@@ -80,6 +80,8 @@ jobs:
 
       - name: Build the application
         run: npm run build
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Create GitHub Release
         id: create_release
