@@ -1,6 +1,6 @@
 # Sony Bravia Remote Control
 
-A simple Electron-based remote control application to interact with Sony Bravia TVs over a local network using the ScalarWebAPI and IRCC commands. The app allows users to control TV functionalities like power, volume, channels, input, and media controls through an intuitive remote interface.
+A simple Electron-based remote control application to interact with Sony Bravia TVs over a local network using the ScalarWebAPI and IRCC commands. The app allows users to control TV functionalities like power, volume, channels, input, and media controls through an intuitive remote interface. Built specifically for Tobii Dynavox who use TD Control for controlling the Operating System with only their eyes.
 
 ## Features
 
