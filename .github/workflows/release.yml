@@ -45,54 +45,48 @@
 #           asset_name: Sony Bravia Remote Control Setup 1.0.0.exe
 #           asset_content_type: application/zip
 
-name: Build/release
+name: Create Release
 
-on: 
+on:
   push:
     tags:
-      - 'v*'  # Trigger on version tag push (e.g., v1.0.0)
-    branches:
-      - main
+      - 'v*'  # Trigger only on tag pushes (e.g., v1.0.0)
 
 jobs:
   release:
-    runs-on: windows-latest
+    runs-on: ubuntu-latest
 
     steps:
-      - name: Check out Git repository
-        uses: actions/checkout@v2
+      - name: Checkout the repository
+        uses: actions/checkout@v3
 
-      - name: Install Node.js
+      - name: Set up Node.js (if you're building a Node.js app)
         uses: actions/setup-node@v3
         with:
-          node-version: 20
+          node-version: '20'
 
-      - name: Install dependencies
+      - name: Install dependencies (if needed)
         run: npm install
 
-      - name: Build/release Electron app
-        uses: samuelmeuli/action-electron-builder@v1
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          release: false # We will create the release manually
+      - name: Build the application
+        run: npm run build  # This should generate your /dist folder
 
-      # Step to create a GitHub release
       - name: Create GitHub Release
         id: create_release
         uses: actions/create-release@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          tag_name: ${{ github.ref }}
-          release_name: Release ${{ github.ref }}
+          tag_name: ${{ github.ref_name }}  # Extract only the tag name (e.g., v1.0.0)
+          release_name: Release ${{ github.ref_name }}  # Name the release based on the tag
           draft: false
           prerelease: false
 
-      # Step to upload the built .exe file as a release asset
       - name: Upload Release Assets
         uses: actions/upload-release-asset@v1
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./dist/*.exe  # Replace with the correct path to your .exe
-          asset_name: Sony_Bravia_Remote_Control_Setup_${{ github.ref_name }}.exe  # Name the file appropriately
-          asset_content_type: application/octet-stream
+          asset_path: ./dist/*.exe  # Replace with the path to your file
+          asset_name: Sony Bravia Remote Control Setup 1.0.0.exe  # Replace with your asset name
+          asset_content_type: application/zip
+
