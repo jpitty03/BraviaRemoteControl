@@ -7,8 +7,8 @@ const settingsFilePath = path.join(app.getPath('userData'), 'settings.json');
 
 function createWindow() {
     let mainWindow = new BrowserWindow({
-        width: 600,
-        height: 840,
+        width: 475,
+        height: 600,
         webPreferences: {
             preload: path.join(__dirname, 'preload.js'),
             nodeIntegration: false,

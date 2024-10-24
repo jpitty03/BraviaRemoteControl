@@ -11,79 +11,94 @@
 <body>
     <div id="toast" class="toast">Settings saved successfully!</div>
 
-    <div class="container">
-        <!-- Input container for device discovery and controls -->
-        <div class="input-container">
-            <h1>Sony Bravia Remote Control</h1>
 
-            <h2>Device Discovery</h2>
-            <button id="discoverBtn">Discover Devices</button>
-            <br />
-            <label for="deviceSelect">Select a device:</label>
-            <select id="deviceSelect"></select>
+    <div class="main-container">
+        <h1 id="mainHeading">Sony Bravia Remote Control</h1>
+        <!-- Toggle button for input-container -->
+        <!-- Settings icon as the toggle button -->
+        <img id="toggleSettingsBtn" src="assets/settings_icon.png" alt="Settings Icon" class="settings-icon">
 
-            <h2>TV Controls (PSK)</h2>
-            TV IP: <input type="text" id="tvIp" value="192.168.68.68"><br>
-            PSK: <input type="text" id="psk" value="1123"><br><br>
-            <button id="saveSettingsBtn">Save Settings</button><br><br>
-        </div>
+        <div class="container">
+            <!-- Input container for device discovery and controls -->
+            <div class="input-container" id="inputContainer">
+                <h2>Device Discovery</h2>
+                <button id="discoverBtn">Discover Devices</button>
+                <br />
+                <label for="deviceSelect">Select a device:</label>
+                <select id="deviceSelect"></select>
 
-        <!-- Remote buttons with blank slots 3x1 Row Layout -->
-        <div class="remote-container">
-            <button class="remote-button" id="Tv">TV</button>
-            <div class="remote-button blank-slot"></div>
-            <button class="remote-button" id="TvPower">Power</button>
+                <h2>TV Controls (PSK)</h2>
+                TV IP: <input type="text" id="tvIp" value="192.168.68.68"><br>
+                PSK: <input type="text" id="psk" value="1123"><br><br>
+                <button id="saveSettingsBtn">Save Settings</button><br><br>
+            </div>
 
-            <button class="remote-button" id="TvInput">Input</button>
-            <div class="remote-button blank-slot"></div>
-            <button class="remote-button" id="TopMenu">Menu</button>
+            <!-- Remote buttons with blank slots 3x1 Row Layout -->
+            <div class="remote-container">
+                <button class="remote-button" id="Tv">TV</button>
+                <div class="remote-button blank-slot"></div>
+                <button class="remote-button" id="TvPower">Power</button>
 
-            <div class="remote-button blank-slot"></div>
-            <div class="remote-button blank-slot"></div>
-            <div class="remote-button blank-slot"></div>
+                <button class="remote-button" id="TvInput">Input</button>
+                <div class="remote-button blank-slot"></div>
+                <button class="remote-button" id="TopMenu">Menu</button>
 
-            <div class="remote-button blank-slot"></div>
-            <button class="remote-button" id="Up">Up</button>
-            <div class="remote-button blank-slot"></div>
+                <div class="remote-button blank-slot"></div>
+                <div class="remote-button blank-slot"></div>
+                <div class="remote-button blank-slot"></div>
 
-            <button class="remote-button" id="Left">Left</button>
-            <button class="remote-button" id="Confirm">OK</button>
-            <button class="remote-button" id="Right">Right</button>
+                <div class="remote-button blank-slot"></div>
+                <button class="remote-button" id="Up">Up</button>
+                <div class="remote-button blank-slot"></div>
 
-            <div class="remote-button blank-slot"></div>
-            <button class="remote-button" id="Down">Down</button>
-            <div class="remote-button blank-slot"></div>
+                <button class="remote-button" id="Left">Left</button>
+                <button class="remote-button" id="Confirm">OK</button>
+                <button class="remote-button" id="Right">Right</button>
 
-            <div class="remote-button blank-slot"></div>
-            <div class="remote-button blank-slot"></div>
-            <div class="remote-button blank-slot"></div>
+                <div class="remote-button blank-slot"></div>
+                <button class="remote-button" id="Down">Down</button>
+                <div class="remote-button blank-slot"></div>
 
-            <button class="remote-button" id="Return">Back</button>
-            <div class="remote-button blank-slot"></div>
-            <button class="remote-button" id="Home">Home</button>
+                <div class="remote-button blank-slot"></div>
+                <div class="remote-button blank-slot"></div>
+                <div class="remote-button blank-slot"></div>
 
-            <div class="remote-button blank-slot"></div>
-            <div class="remote-button blank-slot"></div>
-            <div class="remote-button blank-slot"></div>
+                <button class="remote-button" id="Return">Back</button>
+                <div class="remote-button blank-slot"></div>
+                <button class="remote-button" id="Home">Home</button>
 
-            <button class="remote-button" id="VolumeUp">Volume Up</button>
-            <div class="remote-button blank-slot"></div>
-            <button class="remote-button" id="ChannelUp">Channel Up</button>
+                <div class="remote-button blank-slot"></div>
+                <div class="remote-button blank-slot"></div>
+                <div class="remote-button blank-slot"></div>
 
-            <button class="remote-button" id="VolumeDown">Volume Down</button>
-            <button class="remote-button" id="Mute">Mute</button>
-            <button class="remote-button" id="ChannelDown">Channel Down</button>
+                <button class="remote-button" id="VolumeUp">Volume Up</button>
+                <div class="remote-button blank-slot"></div>
+                <button class="remote-button" id="ChannelUp">Channel Up</button>
 
-            <button class="remote-button" id="PlayPause">Play/Pause</button>
-            <div class="remote-button blank-slot"></div>
-            <div class="remote-button blank-slot"></div>
+                <button class="remote-button" id="VolumeDown">Volume Down</button>
+                <button class="remote-button" id="Mute">Mute</button>
+                <button class="remote-button" id="ChannelDown">Channel Down</button>
 
-            <button class="remote-button wide" id="Netflix">Netflix</button>
-            <button class="remote-button wide" id="YouTube">YouTube</button>
+                <button class="remote-button" id="PlayPause">Play/Pause</button>
+                <div class="remote-button blank-slot"></div>
+                <div class="remote-button blank-slot"></div>
+
+                <button class="remote-button wide" id="Netflix">Netflix</button>
+                <button class="remote-button wide" id="YouTube">YouTube</button>
+            </div>
         </div>
     </div>
 
     <script>
+        // Function to toggle the visibility of the input container
+        document.getElementById('toggleSettingsBtn').addEventListener('click', () => {
+            const inputContainer = document.getElementById('inputContainer');
+            const mainHeading = document.getElementById('mainHeading');
+
+            inputContainer.classList.toggle('hidden');
+            mainHeading.classList.toggle('hidden');
+        });
+
         // Load settings when the app loads
         window.settingsAPI.onLoadSettings((settings) => {
             if (settings.tvIp) {
