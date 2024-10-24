@@ -13,13 +13,21 @@ A simple Electron-based remote control application to interact with Sony Bravia 
 
 ## Screenshots
 
-![screenshot1](path/to/screenshot1.png)
-![screenshot2](path/to/screenshot2.png)
+![screenshot1](./assets/screenshot_1.png)
 
 ## Installation
 
 1. **Clone the repository:**
 
    ```bash
-   git clone https://github.com/yourusername/sony-bravia-remote-control.git
-   cd sony-bravia-remote-control
+   gh repo clone jpitty03/BraviaRemoteControl
+   cd BraviaRemoteControl
+   ```
+
+2. **Install Dependencies:**
+
+   Make sure you have Node.js installed.
+   ```bash
+   npm install
+   ```
+
