@@ -21,8 +21,8 @@ function createWindow() {
 
     mainWindow.loadFile(path.join(__dirname, 'index.html'));
 
-    mainWindow.webContents.openDevTools();
-
+    // Uncomment to automatically open dev tools
+    // mainWindow.webContents.openDevTools();
 
     mainWindow.webContents.on('did-finish-load', () => {
         const settings = loadSettings();

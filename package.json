@@ -1,18 +1,40 @@
 {
   "name": "braviaremotecontrol",
   "version": "1.0.0",
+  "description": "An Electron app to control Sony Bravia TVs.",
   "main": "main.js",
+  "author": "Joshua Fairbank",
+  "license": "MIT",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "electron ."
+    "start": "electron .",
+    "build": "electron-builder"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "description": "",
+  "build": {
+    "appId": "com.joshfairbank.sony-bravia-remote",
+    "productName": "Sony Bravia Remote Control",
+    "directories": {
+      "output": "dist"
+    },
+    "files": [
+      "index.html",
+      "main.js",
+      "preload.js",
+      "style.css",
+      "utils/**/*"
+    ],
+    "win": {
+      "target": "nsis",
+      "icon": "assets/icon.ico"
+    }
+  },
+
   "dependencies": {
-    "electron": "^33.0.1",
     "node-ssdp": "^4.0.1",
     "xmlhttprequest": "^1.8.0"
+  },
+  "devDependencies": {
+    "electron": "^33.0.1",
+    "electron-builder": "^25.1.8"
   }
 }

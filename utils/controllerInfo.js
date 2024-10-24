@@ -1,3 +1,4 @@
+// controllerInfo contains all IRCC commands for Sony Bravia TVs. Some commands may not work on all Sony TVs.
 const controllerInfo = [
     {
         "name": "Num1",
