@@ -45,5 +45,17 @@ A simple Electron-based remote control application to interact with Sony Bravia 
 2. **Save Settings:**  Save your TV IP and PSK for future use by clicking Save Settings. A toast notification will confirm successful saving.
 2. **Control Your TV:**  Use the remote buttons to interact with your Sony Bravia TV. Commands like Power, Volume, Channel, and Input are supported.
 
+## Building
+Using this the workflow above, GitHub will build your app every time you push a commit.
+
+## Releasing
+When you want to create a new release, follow these steps:
+
+1. Update the version in your project's package.json file (e.g. 1.2.3)
+2. Commit that change (git commit -am v1.2.3)
+3. Tag your commit (git tag v1.2.3). Make sure your tag name's format is v*.*.*. Your workflow will use this tag to detect when to create a release
+4. Push your changes to GitHub (git push && git push --tags)
+After building successfully, the action will publish your release artifacts. By default, a new release draft will be created on GitHub with download links for your app. If you want to change this behavior, have a look at the electron-builder docs.
+
 ## License
 This project is licensed under the MIT License - see the LICENSE file for details.
