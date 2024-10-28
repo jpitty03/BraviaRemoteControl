@@ -13,9 +13,7 @@
 
 
     <div class="main-container">
-        Current version: <span id="version">v1.1.3</v1></span>
         <h1 id="mainHeading">Sony Bravia Remote Control</h1>
-        <!-- Toggle button for input-container -->
         <!-- Settings icon as the toggle button -->
         <img id="toggleSettingsBtn" src="assets/settings_icon.png" alt="Settings Icon" class="settings-icon">
 
@@ -25,13 +23,15 @@
                 <h2>Device Discovery</h2>
                 <button id="discoverBtn">Discover Devices</button>
                 <br />
-                <label for="deviceSelect">Select a device:</label>
+                <label for="deviceSelect">Select a device:</label><br>
                 <select id="deviceSelect"></select>
 
-                <h2>TV Controls (PSK)</h2>
-                TV IP: <input type="text" id="tvIp" value="192.168.68.68"><br>
-                PSK: <input type="text" id="psk" value="1123"><br><br>
+                <h2>Device Controls</h2>
+                TV IP: <input type="text" id="tvIp" value="192.168.1.234"><br>
+                PSK: <input type="text" id="psk" value="1234"><br><br>
                 <button id="saveSettingsBtn">Save Settings</button><br><br>
+                <button id="checkUpdatesBtn">Check for Updates</button>
+                <p id="updateStatus"></p>
             </div>
 
             <!-- Remote buttons with blank slots 3x1 Row Layout -->
@@ -91,6 +91,50 @@
     </div>
 
     <script>
+        // Check for updates
+        document.getElementById('checkUpdatesBtn').addEventListener('click', async () => {
+            const updateStatus = document.getElementById('updateStatus');
+            const currentVersion = window.appInfo.version;
+
+            try {
+                // Fetch the latest release data from GitHub
+                const response = await fetch('https://api.github.com/repos/jpitty03/BraviaRemoteControl/releases/latest');
+                const data = await response.json();
+                const latestVersion = data.tag_name.replace(/^v/, ''); // Remove 'v' from version tag if present
+
+                // Check if a new version is available
+                if (compareVersions(latestVersion, currentVersion)) {
+                    // Find the .exe asset in the release
+                    const exeAsset = data.assets.find(asset => asset.name.endsWith('.exe'));
+
+                    if (exeAsset) {
+                        updateStatus.innerHTML = `A new version (${latestVersion}) is available! <a href="${exeAsset.browser_download_url}" download id="downloadLink">Download Now</a>`;
+                    } else {
+                        updateStatus.textContent = 'New version found, but no .exe file is available for download.';
+                    }
+                } else {
+                    updateStatus.innerHTML = `You’re up to date!<br>Current version: ${currentVersion}`;
+                }
+            } catch (error) {
+                console.error('Error checking for updates:', error);
+                updateStatus.innerHTML = `You’re up to date!<br>Current version: ${currentVersion}`;
+            }
+        });
+
+        // Function to compare semantic versions (returns true if update is available)
+        function compareVersions(latest, current) {
+            const latestParts = latest.split('.').map(Number);
+            const currentParts = current.split('.').map(Number);
+
+            for (let i = 0; i < Math.max(latestParts.length, currentParts.length); i++) {
+                const latestPart = latestParts[i] || 0;
+                const currentPart = currentParts[i] || 0;
+                if (latestPart > currentPart) return true;
+                if (latestPart < currentPart) return false;
+            }
+            return false;
+        }
+
         // Function to toggle the visibility of the input container
         document.getElementById('toggleSettingsBtn').addEventListener('click', () => {
             const inputContainer = document.getElementById('inputContainer');
@@ -162,6 +206,10 @@
 
         // Device discovery button event
         document.getElementById('discoverBtn').addEventListener('click', () => {
+            const discoverBtn = document.getElementById('discoverBtn');
+            discoverBtn.textContent = 'Searching...';
+            discoverBtn.disabled = true;
+
             window.api.discoverDevices().then(devices => {
                 const deviceSelect = document.getElementById('deviceSelect');
                 deviceSelect.innerHTML = '';  // Clear the dropdown before adding new options
@@ -169,17 +217,23 @@
                 devices.forEach(device => {
                     const option = document.createElement('option');
                     option.value = device.ip;
-                    option.textContent = `${device.name} (${device.ip})`;
+                    option.textContent = `${device.friendlyName} (${device.ip})`;  // Updated display format
                     deviceSelect.appendChild(option);
                 });
 
                 if (devices.length > 0) {
+                    showToast('Devices found!');
                     document.getElementById('tvIp').value = devices[0].ip;
                 }
             }).catch(error => {
+                showToast('Devices not found!');
                 console.error('Error discovering devices:', error);
+            }).finally(() => {
+                discoverBtn.textContent = 'Discover Devices';
+                discoverBtn.disabled = false;
             });
         });
+
 
         document.getElementById('deviceSelect').addEventListener('change', (event) => {
             document.getElementById('tvIp').value = event.target.value;

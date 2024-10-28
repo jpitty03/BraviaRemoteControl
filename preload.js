@@ -3,6 +3,8 @@ const controllerInfo = require('./utils/controllerInfo');
 const XMLHttpRequest = require('xmlhttprequest').XMLHttpRequest;
 const SSDP = require('node-ssdp').Client;
 const ssdp = new SSDP();
+const packageJson = require('./package.json')
+const discoverDevices = require('./utils/discoverDevices')
 
 // Function to send commands using XHR
 function sendCommand(tvIp, service, method, params, psk) {
@@ -30,34 +32,6 @@ function sendCommand(tvIp, service, method, params, psk) {
             id: 1,
             params: params ? [params] : []
         }));
-    });
-}
-
-// Function to discover devices using SSDP
-function discoverDevices() {
-    return new Promise((resolve, reject) => {
-        const devices = [];
-
-        ssdp.on('response', function inResponse(headers, statusCode, rinfo) {
-            if (headers.ST && headers.ST.includes('urn:schemas-upnp-org:device:MediaRenderer')) {
-                devices.push({
-                    ip: rinfo.address,
-                    name: headers['CACHE-CONTROL'] || 'Unknown Device'
-                });
-            }
-        });
-
-        ssdp.search('urn:schemas-upnp-org:device:MediaRenderer:1');
-
-        // Stop discovery after 10 seconds and return found devices
-        setTimeout(() => {
-            // ssdp.stop();
-            if (devices.length > 0) {
-                resolve(devices);
-            } else {
-                reject('No devices found');
-            }
-        }, 10000);
     });
 }
 
@@ -155,6 +129,11 @@ contextBridge.exposeInMainWorld('settingsAPI', {
     saveSettings: (settings) => ipcRenderer.send('save-settings', settings),
     onLoadSettings: (callback) => ipcRenderer.on('load-settings', (event, settings) => callback(settings))
 });
+
+// Expose package.json verson
+contextBridge.exposeInMainWorld('appInfo', {
+    version: packageJson.version,
+  });
 
 // Expose device discovery and command sending functions to the renderer process
 contextBridge.exposeInMainWorld('api', {
