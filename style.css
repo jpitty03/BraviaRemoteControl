@@ -194,8 +194,8 @@ button {
     color: #f4f4f4;                   /* Light text color for readability */
     border: none;                     /* Remove default border */
     border-radius: 5px;               /* Rounded corners for consistency */
-    padding: 10px 20px;               /* Button padding */
-    font-size: 16px;                  /* Font size */
+    padding: 10px 10px;               /* Button padding */
+    font-size: 12px;                  /* Font size */
     cursor: pointer;                  /* Pointer cursor on hover */
     transition: background-color 0.3s ease, transform 0.1s ease; /* Smooth color and scale transition */
 }
