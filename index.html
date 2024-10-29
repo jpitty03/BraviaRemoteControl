@@ -13,7 +13,7 @@
 
 
     <div class="main-container">
-        <h1 id="mainHeading">Sony Bravia Remote Control</h1>
+        <h1 class="header" id="mainHeading">Sony Bravia Remote Control</h1>
         <!-- Settings icon as the toggle button -->
         <img id="toggleSettingsBtn" src="assets/settings_icon.png" alt="Settings Icon" class="settings-icon">
 
@@ -27,10 +27,15 @@
                 <select id="deviceSelect"></select>
 
                 <h2>Device Controls</h2>
-                TV IP: <input type="text" id="tvIp" value="192.168.1.234"><br>
-                PSK: <input type="text" id="psk" value="1234"><br><br>
-                <button id="saveSettingsBtn">Save Settings</button><br><br>
-                <button id="checkUpdatesBtn">Check for Updates</button>
+                <label for="tvIp">TV IP:</label>
+                <input type="text" id="tvIp" value="192.168.1.234"><br>
+
+                <label for="psk">PSK:</label>
+                <input type="text" id="psk" value="1234"><br><br>
+                <div class="button-row">
+                    <button id="saveSettingsBtn">Save</button>
+                    <button id="checkUpdatesBtn">Update</button>
+                </div>
                 <p id="updateStatus"></p>
             </div>
 
@@ -110,14 +115,17 @@
                     if (exeAsset) {
                         updateStatus.innerHTML = `A new version (${latestVersion}) is available! <a href="${exeAsset.browser_download_url}" download id="downloadLink">Download Now</a>`;
                     } else {
-                        updateStatus.textContent = 'New version found, but no .exe file is available for download.';
+                        // updateStatus.textContent = 'New version found, but no .exe file is available for download.';
+                        showToast('New version found, but no .exe file is available for download.');
                     }
                 } else {
-                    updateStatus.innerHTML = `You’re up to date!<br>Current version: ${currentVersion}`;
+                    // updateStatus.innerHTML = `You’re up to date!<br>Current version: ${currentVersion}`;
+                    showToast(`You’re up to date!\nCurrent version: v${currentVersion}`);
                 }
             } catch (error) {
                 console.error('Error checking for updates:', error);
-                updateStatus.innerHTML = `You’re up to date!<br>Current version: ${currentVersion}`;
+                // updateStatus.innerHTML = `You’re up to date!<br>Current version: ${currentVersion}`;
+                showToast(`You’re up to date!\nCurrent version: v${currentVersion}`);
             }
         });
 

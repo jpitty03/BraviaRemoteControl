@@ -8,8 +8,7 @@ A simple Electron-based remote control application to interact with Sony Bravia 
 - **IRCC Commands**: Send Infrared-like remote control commands via Sony’s IRCC API.
 - **Customizable Settings**: Save TV IP and PSK (Pre-Shared Key) for easy reconnection.
 - **Remote Control UI**: Intuitive on-screen remote to control TV functions.
-- **Toast Notifications**: Receive notifications for successful actions like saving settings.
-- **Cross-platform**: Works on Windows, macOS, and Linux.
+- **Platform**: Works on Windows.
 
 ## Screenshots
 
@@ -42,7 +41,7 @@ A simple Electron-based remote control application to interact with Sony Bravia 
 
 1. **Device Discovery:**  Click on Discover Devices to automatically find your Sony Bravia TV on the network.
 1. **Set TV IP and PSK:**  Manually enter your TV’s IP address and PSK (Pre-Shared Key) if it is not automatically discovered.
-2. **Save Settings:**  Save your TV IP and PSK for future use by clicking Save Settings. A toast notification will confirm successful saving.
+2. **Save Settings:**  Save your TV IP and PSK for future use by clicking Save Settings.
 2. **Control Your TV:**  Use the remote buttons to interact with your Sony Bravia TV. Commands like Power, Volume, Channel, and Input are supported.
 
 ## Building

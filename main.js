@@ -8,7 +8,7 @@ const settingsFilePath = path.join(app.getPath('userData'), 'settings.json');
 function createWindow() {
     let mainWindow = new BrowserWindow({
         width: 475,
-        height: 600,
+        height: 650,
         webPreferences: {
             preload: path.join(__dirname, 'preload.js'),
             nodeIntegration: false,
@@ -21,7 +21,7 @@ function createWindow() {
 
     mainWindow.loadFile(path.join(__dirname, 'index.html'));
 
-    mainWindow.webContents.openDevTools();
+    // mainWindow.webContents.openDevTools();
 
     mainWindow.on('closed', () => {
         mainWindow = null;
