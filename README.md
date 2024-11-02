@@ -40,7 +40,7 @@ A simple Electron-based remote control application to interact with Sony Bravia 
 ## Usage
 
 1. **Device Discovery:**  Click on Discover Devices to automatically find your Sony Bravia TV on the network.
-1. **Set TV IP and PSK:**  Manually enter your TV’s IP address and PSK (Pre-Shared Key) if it is not automatically discovered.
+1. **Set TV IP and PSK:**  Manually enter your TV’s IP address and PSK (Pre-Shared Key) if it is not automatically discovered. Go here to set up PSK for Bravia TVs. [How to Configure Pre-Shared Key](https://pro-bravia.sony.net/resources/software/bravia-signage/user-guide/chapter_1/#configure-pre-shared-key)
 2. **Save Settings:**  Save your TV IP and PSK for future use by clicking Save Settings.
 2. **Control Your TV:**  Use the remote buttons to interact with your Sony Bravia TV. Commands like Power, Volume, Channel, and Input are supported.
 
