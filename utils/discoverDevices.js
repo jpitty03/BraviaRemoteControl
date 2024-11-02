@@ -13,7 +13,7 @@ async function discoverSsdpDevices() {
             const location = headers.LOCATION || 'Unknown Location';
             const ip = rinfo.address;
 
-            if (!seenIps.has(ip)) {
+            if (!seenIps.has(ip) && location.includes('.xml')) {
                 seenIps.add(ip);
                 devices.push({ ip, location });
             }
@@ -22,6 +22,7 @@ async function discoverSsdpDevices() {
         client.search('ssdp:all');
 
         setTimeout(() => {
+            console.log(devices)
             client.stop();
             if (devices.length > 0) {
                 resolve(devices);
