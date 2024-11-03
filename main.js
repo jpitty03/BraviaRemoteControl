@@ -5,8 +5,10 @@ const fs = require('fs');
 // Path to settings file (use userData directory)
 const settingsFilePath = path.join(app.getPath('userData'), 'settings.json');
 
+let mainWindow;
+
 function createWindow() {
-    let mainWindow = new BrowserWindow({
+    mainWindow = new BrowserWindow({
         width: 475,
         height: 650,
         webPreferences: {
@@ -61,16 +63,31 @@ ipcMain.on('save-settings', (event, settings) => {
     saveSettings(settings);
 });
 
-app.whenReady().then(createWindow);
+// Ensure only one instance of the app is running
+const gotTheLock = app.requestSingleInstanceLock();
 
-app.on('window-all-closed', () => {
-    if (process.platform !== 'darwin') {
-        app.quit();
-    }
-});
+if (!gotTheLock) {
+    app.quit();
+} else {
+    app.on('second-instance', () => {
+        // Focus the existing instance's window if another instance is started
+        if (mainWindow) {
+            if (mainWindow.isMinimized()) mainWindow.restore();
+            mainWindow.focus();
+        }
+    });
 
-app.on('activate', () => {
-    if (BrowserWindow.getAllWindows().length === 0) {
-        createWindow();
-    }
-});
+    app.whenReady().then(createWindow);
+
+    app.on('window-all-closed', () => {
+        if (process.platform !== 'darwin') {
+            app.quit();
+        }
+    });
+
+    app.on('activate', () => {
+        if (BrowserWindow.getAllWindows().length === 0) {
+            createWindow();
+        }
+    });
+}
