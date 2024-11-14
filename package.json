@@ -1,6 +1,6 @@
 {
   "name": "braviaremotecontrol",
-  "version": "2.0.5",
+  "version": "2.0.6",
   "description": "An Electron app to control Sony Bravia TVs.",
   "main": "main.js",
   "author": "Joshua Fairbank",
@@ -30,7 +30,6 @@
     }
   },
   "dependencies": {
-    "braviaremotecontrol": "file:",
     "node-fetch": "^3.3.2",
     "node-ssdp": "^4.0.1",
     "xml2js": "^0.6.2",
